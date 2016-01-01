@@ -112,7 +112,7 @@ trait Metable
              */
             $key = $model->getMetaItemInstance()->getKeyName();
 
-            $to_remove = array_diff($model->meta->getOriginalModelKeys(), $model->meta->modelKeys());
+            $to_remove = array_diff($model->meta->originalModelKeys(), $model->meta->modelKeys());
 
             $model->meta()->whereIn($key, $to_remove)->delete();
 
@@ -138,7 +138,7 @@ trait Metable
 
     /**
      * Observes the model and deletes meta entries on delete.
-     * 
+     *
      * @return void
      */
     public static function observeDeleteAndCascade()

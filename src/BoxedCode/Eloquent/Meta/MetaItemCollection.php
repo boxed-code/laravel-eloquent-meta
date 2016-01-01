@@ -31,11 +31,6 @@ class MetaItemCollection extends CollectionBase
         $this->observeDeletions($this->items);
     }
 
-    public function getOriginalModelKeys()
-    {
-        return $this->original_model_keys;
-    }
-
     public function modelKeys()
     {
         $keys = [];
@@ -49,12 +44,21 @@ class MetaItemCollection extends CollectionBase
         return $keys;
     }
 
+    public function originalModelKeys()
+    {
+        return $this->original_model_keys;
+    }
+
     public function add($item)
     {
         if ($item instanceof ItemContract) {
 
             if (! is_null($this->find($item->key, $item->tag))) {
-                throw new \InvalidArgumentException("Unique key / tag index constraint failed. [$item->key/$item->tag]");
+                $tag = $item->tag ?: $this->default_tag;
+
+                $key = $item->key;
+
+                throw new \InvalidArgumentException("Unique key / tag constraint failed. [$key/$tag]");
             }
 
             $this->observeDeletions([$item]);
