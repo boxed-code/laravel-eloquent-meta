@@ -156,6 +156,14 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    public function __call($name, $arguments)
+    {
+        if (starts_with($name, 'where') && 1 === count($arguments)) {
+            $key = snake_case(substr($name, 5));
+            return $this->where($key, $arguments[0]);
+        }
+    }
+
     /**
      * Getter.
      *
