@@ -1,0 +1,17 @@
+{
+  "name": "boxedcode/laravel-eloquent-meta",
+  "description": "Meta data framework for Laravel's eloquent models.",
+  "minimum-stability": "dev",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oliver Green",
+      "email": "dubious@codeblog.co.uk"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BoxedCode\\Eloquent\\Meta\\": "src/BoxedCode/Eloquent/Meta/"
+    }
+  },
+}
