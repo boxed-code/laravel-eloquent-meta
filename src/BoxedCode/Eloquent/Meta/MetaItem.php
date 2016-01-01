@@ -131,7 +131,11 @@ class MetaItem extends Model implements ModelContract
      */
     public function newCollection(array $models = [])
     {
-        return new MetaItemCollection($models);
+        $collection = new MetaItemCollection($models);
+
+        $collection::setMetaItemClass($this);
+
+        return $collection;
     }
 
     /**

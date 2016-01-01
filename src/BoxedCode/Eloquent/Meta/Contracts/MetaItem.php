@@ -20,4 +20,5 @@ interface MetaItem
     public function getRawValue();
     public function __toString();
     public function newCollection(array $models = []);
+    public static function deleted($callback, $priority = 0);
 }

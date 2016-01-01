@@ -35,7 +35,7 @@ trait Metable
      */
     public function meta()
     {
-        return $this->hasMeta($this->getMetaItemClassName(), 'model');
+        return $this->hasMeta($this->getMetaItemInstance(), 'model');
     }
 
     /**
@@ -61,18 +61,15 @@ trait Metable
         return false;
     }
 
-    /**
-     * Get the item model class name to use.
-     *
-     * @return string
-     */
-    public function getMetaItemClassName()
+    public function getMetaItemInstance($attr = [])
     {
         if (isset($this->metaItemClass)) {
-            return $this->metaItemClass;
+            $class = $this->metaItemClass;
         } else {
-            return app('meta.model');
+            $class = MetaItem::class;
         }
+
+        return new $class($attr);
     }
 
     /**
@@ -102,8 +99,7 @@ trait Metable
     }
 
     /**
-     * Observes the parent model and saves
-     * dirty model data on parent save.
+     * Observes the model and saves dirty meta data on save.
      *
      * @return void
      */
@@ -114,13 +110,11 @@ trait Metable
             /*
              * Remove any keys not present in the collection
              */
-            $class = $model->getMetaItemClassName();
+            $key = $model->getMetaItemInstance()->getKeyName();
 
-            $key = with(new $class)->getKeyName();
+            $to_remove = array_diff($model->meta->getOriginalModelKeys(), $model->meta->modelKeys());
 
-            $to_remove = $model->meta->getOriginal()->diff($model->meta);
-
-            $model->meta()->whereIn($key, $to_remove->lists('id'))->delete();
+            $model->meta()->whereIn($key, $to_remove)->delete();
 
             /*
              * Save dirty meta items
@@ -143,8 +137,7 @@ trait Metable
     }
 
     /**
-     * Observes the parent model and deletes meta 
-     * entries on parent delete.
+     * Observes the model and deletes meta entries on delete.
      * 
      * @return void
      */

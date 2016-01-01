@@ -27,31 +27,7 @@ class MetaServiceProvider extends ServiceProvider
     {
         $this->registerMigrationCommand();
 
-        $this->bindContracts();
-
         $this->registerTypeRegistry();
-    }
-
-    /**
-     * Bind the meta contracts to concrete instances.
-     * 
-     * @return void
-     */
-    public function bindContracts()
-    {
-        $rebound = function ($app) {
-            $instance = $app[MetaItemContract::class];
-            $this->app['meta.model'] = get_class($instance);
-        };
-
-        $this->app->rebinding(MetaItemContract::class, $rebound);
-
-        $this->app->bind(
-            MetaItemContract::class, 
-            \BoxedCode\Eloquent\Meta\MetaItem::class
-        );
-
-        $rebound($this->app);
     }
 
     /**

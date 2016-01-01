@@ -16,90 +16,48 @@ use BoxedCode\Eloquent\Meta\Contracts\MetaItem as ItemContract;
 
 class MetaItemCollection extends CollectionBase
 {
-    /**
-     * Class name of collection items.
-     * Used to create new items via the magic method.
-     *
-     * @var string
-     */
-    protected $item_class = ItemContract::class;
-
-    protected $original = [];
+    protected static $item_class;
 
     protected $default_tag = 'default';
 
-    public function setDefaultTag($tag)
-    {
-        $this->default_tag = $tag;
-
-        return $this;
-    }
-
-    public function getDefaultTag()
-    {
-        return $this->default_tag;
-    }
+    protected $original_model_keys = [];
 
     public function __construct($items = [])
     {
         $this->items = is_array($items) ? $items : $this->getArrayableItems($items);
 
-        $this->original = $items;
+        $this->original_model_keys = $this->modelKeys();
 
         $this->observeDeletions($this->items);
     }
 
-    public function getOriginal()
+    public function getOriginalModelKeys()
     {
-        return new static($this->original);
+        return $this->original_model_keys;
     }
 
-    protected function observeDeletions(array $items)
+    public function modelKeys()
     {
-        foreach ($items as $item) {
-            
+        $keys = [];
+
+        foreach ($this->items as $item) {
             if ($item instanceof ItemContract) {
-
-                $item::deleted(function ($model) {
-                    $key = $this->getKeyByName($model->key);
-
-                    if ($key) {
-                        $this->forget($this->items[$key]);
-                    }
-                });
-
+                $keys[] = $item->getKey();
             }
         }
+
+        return $keys;
     }
 
-    /**
-     * Get the class name of collection items.
-     *
-     * @return string
-     */
-    public function getItemClass()
-    {
-        return $this->item_class;
-    }
-
-    /**
-     * Add an item to the collection.
-     *
-     * @param  mixed  $item
-     * @return $this
-     */
     public function add($item)
     {
-        if (is_array($item)) {
-            $instance = app($this->getItemClass());
-            $instance->fill($item);
-            $item = $instance;
-        }
+        if ($item instanceof ItemContract) {
 
-        $this->observeDeletions([$item]);
+            if (! is_null($this->find($item->key, $item->tag))) {
+                throw new \InvalidArgumentException("Unique key / tag index constraint failed. [$item->key/$item->tag]");
+            }
 
-        if (! $item->tag) {
-            $item->tag = $this->default_tag;
+            $this->observeDeletions([$item]);
         }
 
         $this->items[] = $item;
@@ -107,53 +65,63 @@ class MetaItemCollection extends CollectionBase
         return $this;
     }
 
-    /**
-     * Get an items collection key by name.
-     *
-     * @param  string $name
-     * @param  string $tag
-     * @return \BoxedCode\Eloquent\Meta\Contracts\MetaItem
-     */
-    public function getKeyByName($name, $tag = null)
+    public function find($key, $tag = null)
     {
-        if (! $tag) {
-            $tag = $this->default_tag;
+        $collection = $this->whereKey($key);
+
+        if (! is_null($tag)) {
+            $collection = $collection->whereTag($tag);
         }
 
-        $search = function ($item, $key) use ($name, $tag) {
-            if ($name === $item->key && $tag === $item->tag) {
-                return true;
+        if ($collection->count() > 0) {
+            return $collection->keys()->first();
+        }
+    }
+
+    protected function observeDeletions(array $items)
+    {
+        foreach ($items as $item) {
+            if ($item instanceof ItemContract) {
+                $this->observeDeletion($item);
             }
-
-            return false;
-        };
-
-        return $this->search($search);
-    }
-
-    /**
-     * Get an item by name.
-     *
-     * @param  string $name
-     * @param  string $tag
-     * @return \BoxedCode\Eloquent\Meta\Contracts\MetaItem
-     */
-    public function getByKey($name, $tag = null)
-    {
-        $key = $this->getKeyByName($name, $tag);
-
-        if (false !== $key) {
-            return $this[$key];
         }
     }
 
-    public function forgetByKey($name, $tag = null)
+    protected function observeDeletion(ItemContract $item)
     {
-        $key = $this->getKeyByName($name, $tag);
+        $item::deleted(function ($model) {
+            $key = $this->find($model->key, $model->tag);
 
-        if (false !== $key) {
-            $this->forget($key);
+            if (! is_null($key)) {
+                $this->forget($key);
+            }
+        });
+    }
+
+    public static function getMetaItemClass()
+    {
+        return static::$item_class;
+    }
+
+    public static function setMetaItemClass($class)
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
         }
+
+        static::$item_class = $class;
+    }
+
+    public function getDefaultTag()
+    {
+        return $this->default_tag;
+    }
+
+    public function setDefaultTag($name)
+    {
+        $this->default_tag = $name;
+
+        return $this;
     }
 
     public function __call($name, $arguments)
@@ -164,35 +132,52 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
-    /**
-     * Getter.
-     *
-     * @param  string $name
-     * @return \BoxedCode\Eloquent\Meta\Contracts\MetaItem|null
-     */
+    public function __isset($name)
+    {
+        return ! is_null($this->find($name, $this->default_tag));
+    }
+
+    public function __unset($name)
+    {
+        $key = $this->find($name, $this->default_tag);
+
+        if (! is_null($key)) {
+            $this->forget($key);
+        }
+    }
+
     public function __get($name)
     {
-        if ($item = $this->getByKey($name)) {
-            return $item->value;
+        $key = $this->find($name, $this->default_tag);
+
+        if (! is_null($key)) {
+            return $this->get($key)->value;
         }
 
-        elseif (($tag = $this->where('tag', $name)) && $tag->count() > 0) {
+        $tag = $this->whereTag($name);
+
+        if ($tag->count() > 0) {
             return $tag->setDefaultTag($name);
         }
     }
 
-    /**
-     * Setter.
-     *
-     * @param string $name
-     * @param mixed $value
-     */
     public function __set($name, $value)
     {
-        if ($item = $this->getByKey($name)) {
-            $item->value = $value;
-        } else {
-            $this->add(['key'   => $name, 'value' => $value]);
+        $key = $this->find($name, $this->default_tag);
+
+        if (! is_null($key)) {
+            $this->get($key)->value = $value;
+        }
+        else {
+            $attr = [
+                'key'   => $name,
+                'value' => $value,
+                'tag'   => $this->default_tag
+            ];
+
+            $class = static::$item_class;
+
+            $this->add(new $class($attr));
         }
     }
 }
