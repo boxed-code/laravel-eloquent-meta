@@ -13,5 +13,5 @@
     "psr-4": {
       "BoxedCode\\Eloquent\\Meta\\": "src/BoxedCode/Eloquent/Meta/"
     }
-  },
+  }
 }
