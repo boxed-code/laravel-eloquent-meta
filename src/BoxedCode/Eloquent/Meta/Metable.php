@@ -30,7 +30,7 @@ trait Metable
      *
      * @return string
      */
-    abstract function getKeyName();
+    abstract public function getKeyName();
 
     /**
      * Meta item relationship.
@@ -102,7 +102,7 @@ trait Metable
      * @param  string  $id
      * @return array
      */
-    abstract function getMorphs($name, $type, $id);
+    abstract protected function getMorphs($name, $type, $id);
 
     /**
      * Define the polymorphic one-to-many relationship with the meta data.
