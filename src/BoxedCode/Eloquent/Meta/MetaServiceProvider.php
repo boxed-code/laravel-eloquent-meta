@@ -47,7 +47,7 @@ class MetaServiceProvider extends ServiceProvider
      */
     public function registerTypeRegistry()
     {
-        $this->app->singleton(TypeRegistry::class, function () {
+        $this->app->singleton(TypeRegistry::class, function() {
             $registry = new TypeRegistry;
 
             $this->registerDefaultTypes($registry);
