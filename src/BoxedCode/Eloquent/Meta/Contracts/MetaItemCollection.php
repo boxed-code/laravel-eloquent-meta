@@ -16,7 +16,7 @@ interface MetaItemCollection
     public function modelKeys();
     public function originalModelKeys();
     public function add($item);
-    public function find($key, $tag = null);
+    public function findItem($key, $tag = null);
     public function getDefaultTag();
     public function setDefaultTag($name);
     public function where($key, $value, $strict = true);

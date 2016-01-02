@@ -92,7 +92,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     {
         if ($item instanceof MetaItemContract) {
 
-            if (! is_null($this->find($item->key, $item->tag))) {
+            if (! is_null($this->findItem($item->key, $item->tag))) {
                 $tag = $item->tag ?: $this->default_tag;
 
                 $key = $item->key;
@@ -115,7 +115,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      * @param null $tag
      * @return mixed
      */
-    public function find($key, $tag = null)
+    public function findItem($key, $tag = null)
     {
         $collection = $this->whereKey($key);
 
@@ -150,7 +150,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     protected function observeDeletion(MetaItemContract $item)
     {
         $item::deleted(function ($model) {
-            $key = $this->find($model->key, $model->tag);
+            $key = $this->findItem($model->key, $model->tag);
 
             if (! is_null($key)) {
                 $this->forget($key);
@@ -232,7 +232,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __isset($name)
     {
-        return ! is_null($this->find($name, $this->default_tag));
+        return ! is_null($this->findItem($name, $this->default_tag));
     }
 
     /**
@@ -242,7 +242,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __unset($name)
     {
-        $key = $this->find($name, $this->default_tag);
+        $key = $this->findItem($name, $this->default_tag);
 
         if (! is_null($key)) {
             $this->forget($key);
@@ -258,7 +258,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __get($name)
     {
-        $key = $this->find($name, $this->default_tag);
+        $key = $this->findItem($name, $this->default_tag);
 
         if (! is_null($key)) {
             return $this->get($key)->value;
@@ -280,7 +280,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __set($name, $value)
     {
-        $key = $this->find($name, $this->default_tag);
+        $key = $this->findItem($name, $this->default_tag);
 
         if (! is_null($key)) {
             $this->get($key)->value = $value;
