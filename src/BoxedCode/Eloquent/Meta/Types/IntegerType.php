@@ -30,7 +30,7 @@ class IntegerType extends Type
      */
     public function set($value)
     {
-       parent::set(intval($value));
+        parent::set(intval($value));
     }
 
     /**

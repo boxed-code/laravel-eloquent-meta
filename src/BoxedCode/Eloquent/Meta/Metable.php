@@ -11,9 +11,6 @@
 
 namespace BoxedCode\Eloquent\Meta;
 
-use BoxedCode\Eloquent\Meta\MetaCollection;
-use BoxedCode\Eloquent\Meta\Contracts\MetaItem as ItemContract;
-
 trait Metable
 {
     /**
@@ -105,7 +102,7 @@ trait Metable
      */
     public static function observeSaveAndCascade()
     {
-        $onSave = function ($model) {
+        $onSave = function($model) {
 
             /*
              * Remove any keys not present in the collection
@@ -143,7 +140,7 @@ trait Metable
      */
     public static function observeDeleteAndCascade()
     {
-        $onDelete = function ($model) {
+        $onDelete = function($model) {
             foreach ($model->meta as $meta) {
                 $meta->delete();
             }
