@@ -13,9 +13,10 @@ namespace BoxedCode\Eloquent\Meta;
 
 use Illuminate\Database\Eloquent\Collection as CollectionBase;
 use BoxedCode\Eloquent\Meta\Contracts\MetaItem as MetaItemContract;
+use BoxedCode\Eloquent\Meta\Contracts\MetaItemCollection as CollectionContract;
 use InvalidArgumentException;
 
-class MetaItemCollection extends CollectionBase
+class MetaItemCollection extends CollectionBase implements CollectionContract
 {
     /**
      * Fully qualified class name to use when creating new items via magic methods.
