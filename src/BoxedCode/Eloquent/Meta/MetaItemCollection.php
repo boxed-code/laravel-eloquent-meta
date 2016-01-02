@@ -13,15 +13,36 @@ namespace BoxedCode\Eloquent\Meta;
 
 use Illuminate\Database\Eloquent\Collection as CollectionBase;
 use BoxedCode\Eloquent\Meta\Contracts\MetaItem as ItemContract;
+use InvalidArgumentException;
 
 class MetaItemCollection extends CollectionBase
 {
+    /**
+     * Fully qualified class name to use when creating new items via magic methods.
+     *
+     * @var string
+     */
     protected static $item_class;
 
+    /**
+     * The default tag name to use when using magic methods.
+     *
+     * @var string
+     */
     protected $default_tag = 'default';
 
+    /**
+     * Keys of the models that the collection was constructed with.
+     *
+     * @var array
+     */
     protected $original_model_keys = [];
 
+    /**
+     * MetaItemCollection constructor.
+     *
+     * @param array $items
+     */
     public function __construct($items = [])
     {
         $this->items = is_array($items) ? $items : $this->getArrayableItems($items);
@@ -31,6 +52,11 @@ class MetaItemCollection extends CollectionBase
         $this->observeDeletions($this->items);
     }
 
+    /**
+     * Get the array of primary keys.
+     *
+     * @return array
+     */
     public function modelKeys()
     {
         $keys = [];
@@ -44,11 +70,23 @@ class MetaItemCollection extends CollectionBase
         return $keys;
     }
 
+    /**
+     * Get the array of primary keys the collection was constructed with.
+     *
+     * @return array
+     */
     public function originalModelKeys()
     {
         return $this->original_model_keys;
     }
 
+    /**
+     * Add an item to the collection.
+     *
+     * @param mixed $item
+     * @return $this
+     * @throws InvalidArgumentException
+     */
     public function add($item)
     {
         if ($item instanceof ItemContract) {
@@ -58,7 +96,7 @@ class MetaItemCollection extends CollectionBase
 
                 $key = $item->key;
 
-                throw new \InvalidArgumentException("Unique key / tag constraint failed. [$key/$tag]");
+                throw new InvalidArgumentException("Unique key / tag constraint failed. [$key/$tag]");
             }
 
             $this->observeDeletions([$item]);
@@ -69,6 +107,13 @@ class MetaItemCollection extends CollectionBase
         return $this;
     }
 
+    /**
+     * Get the collection key form an item key and tag.
+     *
+     * @param mixed $key
+     * @param null $tag
+     * @return mixed
+     */
     public function find($key, $tag = null)
     {
         $collection = $this->whereKey($key);
@@ -82,6 +127,11 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    /**
+     * Set deletion listeners on an array of items.
+     *
+     * @param array $items
+     */
     protected function observeDeletions(array $items)
     {
         foreach ($items as $item) {
@@ -91,6 +141,11 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    /**
+     * Set a deletion listener on an item.
+     *
+     * @param \BoxedCode\Eloquent\Meta\Contracts\MetaItem $item
+     */
     protected function observeDeletion(ItemContract $item)
     {
         $item::deleted(function ($model) {
@@ -102,11 +157,23 @@ class MetaItemCollection extends CollectionBase
         });
     }
 
+    /**
+     * Get the class name that will be used to construct new
+     * items via the magic methods.
+     *
+     * @return string
+     */
     public static function getMetaItemClass()
     {
         return static::$item_class;
     }
 
+    /**
+     * Set the class name that will be used to construct new
+     * items via the magic methods.
+     *
+     * @param $class
+     */
     public static function setMetaItemClass($class)
     {
         if (is_object($class)) {
@@ -116,11 +183,24 @@ class MetaItemCollection extends CollectionBase
         static::$item_class = $class;
     }
 
+    /**
+     * Get the default tag name that will be used to construct new
+     * items via the magic methods.
+     *
+     * @return string
+     */
     public function getDefaultTag()
     {
         return $this->default_tag;
     }
 
+    /**
+     * Set the default tag name that will be used to construct new
+     * items via the magic methods.
+     *
+     * @param $name
+     * @return $this
+     */
     public function setDefaultTag($name)
     {
         $this->default_tag = $name;
@@ -128,6 +208,13 @@ class MetaItemCollection extends CollectionBase
         return $this;
     }
 
+    /**
+     * Resolve calls to filter the collection by item attributes.
+     *
+     * @param string $name
+     * @param array $arguments
+     * @return static
+     */
     public function __call($name, $arguments)
     {
         if (starts_with($name, 'where') && 1 === count($arguments)) {
@@ -136,11 +223,22 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    /**
+     * Resolve calls to check whether an item with a specific key name exists.
+     *
+     * @param $name
+     * @return bool
+     */
     public function __isset($name)
     {
         return ! is_null($this->find($name, $this->default_tag));
     }
 
+    /**
+     * Resolve calls to unset an item with a specific key name.
+     *
+     * @param $name
+     */
     public function __unset($name)
     {
         $key = $this->find($name, $this->default_tag);
@@ -150,6 +248,13 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    /**
+     * Resolve calls to get an item with a specific key name or a
+     * collection of items with a specific tag name.
+     *
+     * @param $name
+     * @return mixed
+     */
     public function __get($name)
     {
         $key = $this->find($name, $this->default_tag);
@@ -165,6 +270,13 @@ class MetaItemCollection extends CollectionBase
         }
     }
 
+    /**
+     * Resolve calls to set a new item to the collection or
+     * update an existing key.
+     *
+     * @param $name
+     * @param $value
+     */
     public function __set($name, $value)
     {
         $key = $this->find($name, $this->default_tag);
