@@ -47,7 +47,7 @@ class CreateMetaMigrationCommand extends MigrateMakeCommand
     /**
      * Assemble variables.
      *
-     * @return void
+     * @return array
      */
     protected function makeVars()
     {
@@ -96,13 +96,13 @@ class CreateMetaMigrationCommand extends MigrateMakeCommand
      */
     protected function makeMigration()
     {
-        extract($this->makeVars());
+        $vars = $this->makeVars();
 
-        $migration = $this->replacePlaceholders($this->getStub(), $name, $table_name);
+        $migration = $this->replacePlaceholders($this->getStub(), $vars['name'], $vars['table_name']);
 
-        file_put_contents($this->getPath($file_name, $path), $migration);
+        file_put_contents($this->getPath($vars['file_name'], $vars['path']), $migration);
 
-        return $file_name;
+        return $vars['file_name'];
     }
 
     /**

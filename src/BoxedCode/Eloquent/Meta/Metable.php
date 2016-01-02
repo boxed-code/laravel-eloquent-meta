@@ -26,13 +26,20 @@ trait Metable
     }
 
     /**
-     * MetaItem relations.
+     * Get the primary key for the model.
+     *
+     * @return string
+     */
+    abstract function getKeyName();
+
+    /**
+     * Meta item relationship.
      *
      * @return \BoxedCode\Eloquent\Meta\HasMeta
      */
     public function meta()
     {
-        return $this->hasMeta($this->getMetaItemInstance(), 'model');
+        return $this->hasMeta($this->getMetaItemClassName(), 'model');
     }
 
     /**
@@ -58,16 +65,44 @@ trait Metable
         return false;
     }
 
-    public function getMetaItemInstance($attr = [])
+    /**
+     * Get the class name of meta relationship items.
+     *
+     * @return string
+     */
+    public function getMetaItemClassName()
     {
-        if (isset($this->metaItemClass)) {
-            $class = $this->metaItemClass;
+        if (isset($this->metaItemClassname)) {
+            $class = $this->metaItemClassname;
         } else {
             $class = MetaItem::class;
         }
 
+        return $class;
+    }
+
+    /**
+     * Get an instance of the meta relationship item class.
+     *
+     * @param array $attr
+     * @return MetaItem
+     */
+    public function getMetaItemInstance($attr = [])
+    {
+        $class = $this->getMetaItemClassName();
+
         return new $class($attr);
     }
+
+    /**
+     * Get the polymorphic relationship columns.
+     *
+     * @param  string  $name
+     * @param  string  $type
+     * @param  string  $id
+     * @return array
+     */
+    abstract function getMorphs($name, $type, $id);
 
     /**
      * Define the polymorphic one-to-many relationship with the meta data.
