@@ -13,6 +13,7 @@ namespace BoxedCode\Eloquent\Meta\Contracts;
 
 interface MetaItem
 {
+    public function getKey();
     public function model();
     public function getValueAttribute();
     public function setValueAttribute($value, $type = null);

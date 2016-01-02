@@ -12,10 +12,10 @@
 namespace BoxedCode\Eloquent\Meta;
 
 use Illuminate\Database\Eloquent\Model;
-use BoxedCode\Eloquent\Meta\Contracts\MetaItem as ModelContract;
+use BoxedCode\Eloquent\Meta\Contracts\MetaItem as MetaItemContract;
 use BoxedCode\Eloquent\Meta\Types\Registry;
 
-class MetaItem extends Model implements ModelContract
+class MetaItem extends Model implements MetaItemContract
 {
     /**
      * The attributes that are mass assignable.
@@ -91,13 +91,13 @@ class MetaItem extends Model implements ModelContract
      */
     public function setValueAttribute($value, $type = null)
     {
-        if (! $type && ! isset($this->attributes['type'])) {
+        if (is_null($type) && ! isset($this->attributes['type'])) {
             $registry = $this->getTypeRegistry();
-            $this->type = $registry->findTypeFor($value)->getClass();
+            $this->attributes['type'] = $registry->findTypeFor($value)->getClass();
         }
 
-        elseif ($type) {
-            $this->type = $type;
+        elseif (isset($type)) {
+            $this->attributes['type'] = $type;
         }
 
         return $this->getTypeInstance()->set($value);

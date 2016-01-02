@@ -13,7 +13,7 @@ namespace BoxedCode\Eloquent\Meta\Types;
 
 use InvalidArgumentException;
 use ArrayAccess;
-use BoxedCode\Eloquent\Meta\Contracts\Type;
+use BoxedCode\Eloquent\Meta\Contracts\Type as TypeContract;
 
 class Registry implements ArrayAccess
 {
@@ -21,7 +21,7 @@ class Registry implements ArrayAccess
 
     public function register($mixed)
     {
-        if ($mixed instanceof Type) {
+        if ($mixed instanceof TypeContract) {
             $this->registerClass(get_class($mixed), $mixed);
 
             return true;

@@ -12,7 +12,7 @@
 namespace BoxedCode\Eloquent\Meta;
 
 use Illuminate\Database\Eloquent\Collection as CollectionBase;
-use BoxedCode\Eloquent\Meta\Contracts\MetaItem as ItemContract;
+use BoxedCode\Eloquent\Meta\Contracts\MetaItem as MetaItemContract;
 use InvalidArgumentException;
 
 class MetaItemCollection extends CollectionBase
@@ -45,7 +45,7 @@ class MetaItemCollection extends CollectionBase
      */
     public function __construct($items = [])
     {
-        $this->items = is_array($items) ? $items : $this->getArrayableItems($items);
+        parent::__construct($items);
 
         $this->original_model_keys = $this->modelKeys();
 
@@ -62,7 +62,7 @@ class MetaItemCollection extends CollectionBase
         $keys = [];
 
         foreach ($this->items as $item) {
-            if ($item instanceof ItemContract) {
+            if ($item instanceof MetaItemContract) {
                 $keys[] = $item->getKey();
             }
         }
@@ -89,7 +89,7 @@ class MetaItemCollection extends CollectionBase
      */
     public function add($item)
     {
-        if ($item instanceof ItemContract) {
+        if ($item instanceof MetaItemContract) {
 
             if (! is_null($this->find($item->key, $item->tag))) {
                 $tag = $item->tag ?: $this->default_tag;
@@ -135,7 +135,7 @@ class MetaItemCollection extends CollectionBase
     protected function observeDeletions(array $items)
     {
         foreach ($items as $item) {
-            if ($item instanceof ItemContract) {
+            if ($item instanceof MetaItemContract) {
                 $this->observeDeletion($item);
             }
         }
@@ -146,7 +146,7 @@ class MetaItemCollection extends CollectionBase
      *
      * @param \BoxedCode\Eloquent\Meta\Contracts\MetaItem $item
      */
-    protected function observeDeletion(ItemContract $item)
+    protected function observeDeletion(MetaItemContract $item)
     {
         $item::deleted(function ($model) {
             $key = $this->find($model->key, $model->tag);
@@ -263,7 +263,7 @@ class MetaItemCollection extends CollectionBase
             return $this->get($key)->value;
         }
 
-        $tag = $this->whereTag($name);
+        $tag = $this->where('tag', $name);
 
         if ($tag->count() > 0) {
             return $tag->setDefaultTag($name);
