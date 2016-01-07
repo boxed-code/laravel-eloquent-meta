@@ -52,6 +52,6 @@ class IntegerType extends Type
      */
     public function __toString()
     {
-        return $this->get();
+        return (string) $this->get();
     }
 }
