@@ -69,6 +69,7 @@ class MetaServiceProvider extends ServiceProvider
             new \BoxedCode\Eloquent\Meta\Types\IntegerType,
             new \BoxedCode\Eloquent\Meta\Types\BooleanType,
             new \BoxedCode\Eloquent\Meta\Types\ArrayType,
+            new \BoxedCode\Eloquent\Meta\Types\DoubleType,
         ];
 
         $registry->register($types);
