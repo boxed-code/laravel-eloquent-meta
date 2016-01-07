@@ -52,9 +52,7 @@ trait Metable
     {
         if (parent::isDirty($attributes)) {
             return true;
-        }
-
-        else {
+        } else {
             foreach ($this->meta as $item) {
                 if ($item->isDirty($attributes)) {
                     return true;
@@ -137,7 +135,7 @@ trait Metable
      */
     public static function observeSaveAndCascade()
     {
-        $onSave = function($model) {
+        $onSave = function ($model) {
 
             /*
              * Remove any keys not present in the collection
@@ -152,7 +150,6 @@ trait Metable
              * Save dirty meta items
              */
             foreach ($model->meta as $meta) {
-
                 if ($meta->isDirty()) {
                     if ($meta->exists) {
                         $meta->save();
@@ -160,7 +157,6 @@ trait Metable
                         $model->meta()->save($meta);
                     }
                 }
-
             }
 
         };
@@ -175,7 +171,7 @@ trait Metable
      */
     public static function observeDeleteAndCascade()
     {
-        $onDelete = function($model) {
+        $onDelete = function ($model) {
             foreach ($model->meta as $meta) {
                 $meta->delete();
             }
@@ -183,5 +179,4 @@ trait Metable
 
         static::deleted($onDelete);
     }
-
 }

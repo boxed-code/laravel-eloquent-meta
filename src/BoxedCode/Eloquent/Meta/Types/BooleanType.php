@@ -16,7 +16,7 @@ class BooleanType extends Type
     /**
      * Parse & return the meta item value.
      *
-     * @return boolean
+     * @return bool
      */
     public function get()
     {
@@ -26,7 +26,7 @@ class BooleanType extends Type
     /**
      * Parse & set the meta item value.
      *
-     * @param boolean $value
+     * @param bool $value
      */
     public function set($value)
     {
@@ -38,7 +38,7 @@ class BooleanType extends Type
      * type of variable passed.
      *
      * @param  mixed  $value
-     * @return boolean
+     * @return bool
      */
     public function isType($value)
     {

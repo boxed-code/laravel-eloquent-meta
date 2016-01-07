@@ -91,7 +91,6 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     public function add($item)
     {
         if ($item instanceof MetaItemContract) {
-
             if (! is_null($this->findItem($item->key, $item->tag))) {
                 $tag = $item->tag ?: $this->default_tag;
 
@@ -220,6 +219,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     {
         if (starts_with($name, 'where') && 1 === count($arguments)) {
             $key = snake_case(substr($name, 5));
+
             return $this->where($key, $arguments[0]);
         }
     }
@@ -284,12 +284,11 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
 
         if (! is_null($key)) {
             $this->get($key)->value = $value;
-        }
-        else {
+        } else {
             $attr = [
                 'key'   => $name,
                 'value' => $value,
-                'tag'   => $this->default_tag
+                'tag'   => $this->default_tag,
             ];
 
             $class = static::$item_class;

@@ -12,7 +12,6 @@
 namespace BoxedCode\Eloquent\Meta;
 
 use Illuminate\Support\ServiceProvider;
-use BoxedCode\Eloquent\Meta\Contracts\MetaItem as MetaItemContract;
 use BoxedCode\Eloquent\Meta\Migrations\CreateMetaMigrationCommand;
 use BoxedCode\Eloquent\Meta\Types\Registry as TypeRegistry;
 
@@ -47,7 +46,7 @@ class MetaServiceProvider extends ServiceProvider
      */
     public function registerTypeRegistry()
     {
-        $this->app->singleton(TypeRegistry::class, function() {
+        $this->app->singleton(TypeRegistry::class, function () {
             $registry = new TypeRegistry;
 
             $this->registerDefaultTypes($registry);

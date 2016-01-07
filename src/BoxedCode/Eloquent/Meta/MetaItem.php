@@ -94,9 +94,7 @@ class MetaItem extends Model implements MetaItemContract
         if (is_null($type) && ! isset($this->attributes['type'])) {
             $registry = $this->getTypeRegistry();
             $this->attributes['type'] = $registry->findTypeFor($value)->getClass();
-        }
-
-        elseif (isset($type)) {
+        } elseif (isset($type)) {
             $this->attributes['type'] = $type;
         }
 
@@ -147,5 +145,4 @@ class MetaItem extends Model implements MetaItemContract
     {
         return $this->getTypeInstance()->__toString();
     }
-
 }

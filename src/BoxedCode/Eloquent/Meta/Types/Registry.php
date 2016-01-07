@@ -25,9 +25,7 @@ class Registry implements ArrayAccess
             $this->registerClass(get_class($mixed), $mixed);
 
             return true;
-        }
-
-        elseif (is_array($mixed)) {
+        } elseif (is_array($mixed)) {
             foreach ($mixed as $type) {
                 $this->register($type);
             }
@@ -42,8 +40,9 @@ class Registry implements ArrayAccess
 
     protected function registerClass($class, $instance)
     {
-        if (!isset($this->registered[$class])) {
+        if (! isset($this->registered[$class])) {
             $this->registered[$class] = $instance;
+
             return true;
         }
 

@@ -58,7 +58,7 @@ abstract class Type implements TypeContract
      * type of variable passed.
      *
      * @param  mixed  $value
-     * @return boolean
+     * @return bool
      */
     abstract public function isType($value);
 

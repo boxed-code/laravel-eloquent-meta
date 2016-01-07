@@ -28,7 +28,7 @@ class StringType extends Type
      * type of variable passed.
      *
      * @param  mixed  $value
-     * @return boolean
+     * @return bool
      */
     public function isType($value)
     {
