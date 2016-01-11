@@ -53,8 +53,10 @@ class CreateMetaMigrationCommand extends MigrateMakeCommand
     {
         $name = $this->input->getArgument('model_name');
 
+        $path = $this->input->getParameterOption('path', null);
+
         return [
-            'path'        => $this->getMigrationPath(),
+            'path'        => $path ?: $this->getMigrationPath(),
             'name'        => $name,
             'table_name'  => $name ? $name.'_meta' : 'meta',
             'file_name'   => $name ? $name.'_meta_migration' : 'meta_migration',
@@ -86,7 +88,7 @@ class CreateMetaMigrationCommand extends MigrateMakeCommand
      */
     protected function getStub()
     {
-        return file_get_contents(__DIR__.DIRECTORY_SEPARATOR);
+        return file_get_contents(__DIR__.DIRECTORY_SEPARATOR.'migration.stub');
     }
 
     /**
