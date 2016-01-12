@@ -1,6 +1,6 @@
 <?php
 
-namespace BoxedCode\Tests\Eloquent\Meta;
+namespace BoxedCode\Tests\Eloquent\Meta\Support;
 
 use BoxedCode\Eloquent\Meta\MetaServiceProvider;
 use Orchestra\Testbench\TestCase;
@@ -53,7 +53,7 @@ class AbstractTestCase extends TestCase
         // Models
         $artisan->call('migrate', [
             '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__.'/Migrations'),
+            '--realpath' => realpath(__DIR__ . '/../Support/migrations'),
         ]);
 
         // Meta

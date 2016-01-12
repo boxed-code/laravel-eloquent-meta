@@ -1,7 +1,7 @@
 <?php
 
 foreach (['/database/migrations/*', '/storage/*migration.php'] as $pattern) {
-    $base = realpath(__DIR__.'/../vendor/orchestra/testbench/fixture');
+    $base = realpath(__DIR__ . '/../../vendor/orchestra/testbench/fixture');
 
     $files = glob($base.$pattern);
 

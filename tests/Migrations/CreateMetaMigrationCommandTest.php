@@ -1,8 +1,10 @@
 <?php
 
-namespace BoxedCode\Tests\Eloquent\Meta;
+namespace BoxedCode\Tests\Eloquent\Meta\Types;
 
-class CreateMetaCommandTest extends AbstractTestCase
+use BoxedCode\Tests\Eloquent\Meta\Support\AbstractTestCase;
+
+class CreateMetaMigrationCommandTest extends AbstractTestCase
 {
     public function testTableCreation()
     {

@@ -4,7 +4,8 @@ namespace BoxedCode\Tests\Eloquent\Meta;
 
 use BoxedCode\Eloquent\Meta\HasMeta;
 use BoxedCode\Eloquent\Meta\MetaItem;
-use BoxedCode\Tests\Eloquent\Meta\Stubs\MetableModel;
+use BoxedCode\Tests\Eloquent\Meta\Support\AbstractTestCase;
+use BoxedCode\Tests\Eloquent\Meta\Support\Stubs\MetableModel;
 
 class MetableTest extends AbstractTestCase
 {

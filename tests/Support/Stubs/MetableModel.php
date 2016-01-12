@@ -1,6 +1,6 @@
 <?php
 
-namespace BoxedCode\Tests\Eloquent\Meta\Stubs;
+namespace BoxedCode\Tests\Eloquent\Meta\Support\Stubs;
 
 use BoxedCode\Eloquent\Meta\Metable;
 use Illuminate\Database\Eloquent\Model;
