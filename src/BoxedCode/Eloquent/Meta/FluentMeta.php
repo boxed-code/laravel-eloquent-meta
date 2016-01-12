@@ -83,7 +83,7 @@ trait FluentMeta
         }
 
         if ($meta = $this->meta->$name) {
-            return $this->meta->$name;
+            return $meta;
         }
     }
 
@@ -116,7 +116,7 @@ trait FluentMeta
             return;
         }
 
-        if ($meta = $this->meta->$name) {
+        if (isset($this->meta->$name)) {
             unset($this->meta->$name);
         }
     }
