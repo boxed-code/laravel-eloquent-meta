@@ -11,7 +11,9 @@
 
 namespace BoxedCode\Eloquent\Meta\Types;
 
-class ArrayType extends Type
+use BoxedCode\Eloquent\Meta\Contracts\Type as TypeContract;
+
+class ArrayType extends Type implements TypeContract
 {
     /**
      * Parse & return the meta item value.

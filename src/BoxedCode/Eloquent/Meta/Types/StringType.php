@@ -11,7 +11,9 @@
 
 namespace BoxedCode\Eloquent\Meta\Types;
 
-class StringType extends Type
+use BoxedCode\Eloquent\Meta\Contracts\Type as TypeContract;
+
+class StringType extends Type implements TypeContract
 {
     /**
      * Parse & set the meta item value.

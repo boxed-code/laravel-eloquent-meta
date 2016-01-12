@@ -11,7 +11,9 @@
 
 namespace BoxedCode\Eloquent\Meta\Types;
 
-class IntegerType extends Type
+use BoxedCode\Eloquent\Meta\Contracts\Type as TypeContract;
+
+class IntegerType extends Type implements TypeContract
 {
     /**
      * Parse & return the meta item value.

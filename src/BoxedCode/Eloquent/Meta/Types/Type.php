@@ -12,9 +12,8 @@
 namespace BoxedCode\Eloquent\Meta\Types;
 
 use BoxedCode\Eloquent\Meta\Contracts\MetaItem as MetaItemContract;
-use BoxedCode\Eloquent\Meta\Contracts\Type as TypeContract;
 
-abstract class Type implements TypeContract
+abstract class Type
 {
     /**
      * MetaItem model instance.
