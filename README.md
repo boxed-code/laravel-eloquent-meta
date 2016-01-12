@@ -59,7 +59,7 @@ echo $model->meta->foo; // prints 'bar'
 
 $item = $model->meta->whereKey('foo')->first();
 
-echo $model->meta->foo; // prints 'bar'
+echo $item; // prints 'bar'
 
 ```
 
@@ -90,7 +90,7 @@ echo $model->foo; // prints 'bar'
 
 $item = $model->meta->whereKey('foo')->first();
 
-echo $model->meta->foo; // prints 'bar'
+echo $item; // prints 'bar'
 
 ```
 
