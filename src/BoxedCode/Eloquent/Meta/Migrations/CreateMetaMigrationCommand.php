@@ -74,7 +74,7 @@ class CreateMetaMigrationCommand extends MigrateMakeCommand
     protected function replacePlaceholders($template, $name, $table_name)
     {
         $replacements = [
-            'DummyClass' => ucfirst($name).'MetaMigration',
+            'DummyClass' => studly_case($name).'MetaMigration',
             'DummyTable' => $table_name,
         ];
 
