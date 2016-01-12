@@ -1,5 +1,5 @@
 {
-  "name": "boxedcode/laravel-eloquent-meta",
+  "name": "boxed-code/laravel-eloquent-meta",
   "description": "Meta data framework for Laravel's eloquent models.",
   "minimum-stability": "dev",
   "keywords": ["laravel", "eloquent", "meta", "model", "metadata", "data"],
