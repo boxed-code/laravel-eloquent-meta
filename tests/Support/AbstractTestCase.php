@@ -55,7 +55,7 @@ class AbstractTestCase extends TestCase
         // Models
         $artisan->call('migrate', [
             '--database' => 'testbench',
-            '--realpath' => realpath(__DIR__ . '/../Support/migrations'),
+            '--realpath' => realpath(__DIR__.'/../Support/migrations'),
         ]);
 
         // Meta

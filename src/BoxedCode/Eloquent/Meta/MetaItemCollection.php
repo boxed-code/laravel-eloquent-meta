@@ -62,7 +62,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     protected function setTags(array $items)
     {
-        array_map(function($item) {
+        array_map(function ($item) {
             if ($item instanceof MetaItemContract) {
                 $item->tag = $item->tag ?: $this->default_tag;
             }

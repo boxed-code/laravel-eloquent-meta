@@ -112,5 +112,4 @@ class MetableTest extends AbstractTestCase
 
         $this->assertNull(MetaItem::first());
     }
-
 }

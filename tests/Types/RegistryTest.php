@@ -80,7 +80,6 @@ class RegistryTest extends AbstractTestCase
         $r->findTypeFor('a string value');
     }
 
-
     public function testRegistered()
     {
         $r = $this->getRegistry();

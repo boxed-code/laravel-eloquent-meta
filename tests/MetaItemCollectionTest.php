@@ -54,7 +54,6 @@ class MetaItemCollectionTest extends AbstractTestCase
         $c->add($item);
 
         $this->assertSame($item, $c[0]);
-
     }
 
     public function testAddMetaItem()
