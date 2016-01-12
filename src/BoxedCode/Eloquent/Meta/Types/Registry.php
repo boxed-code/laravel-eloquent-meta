@@ -75,7 +75,7 @@ class Registry implements ArrayAccess
 
     public function offsetExists($offset)
     {
-        return in_array($offset, $this->registered);
+        return array_key_exists($offset, $this->registered);
     }
 
     public function offsetGet($offset)
@@ -85,7 +85,7 @@ class Registry implements ArrayAccess
 
     public function offsetSet($offset, $value)
     {
-        return $this->registered[$offset] = $value;
+        $this->registerClass($offset, $value);
     }
 
     public function offsetUnset($offset)
