@@ -73,34 +73,16 @@ class MetableTest extends AbstractTestCase
 
     public function testObserveSaveAndCascadeNewItems()
     {
-        $m = $this->getMetableStub();
-
-        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
-
-        $m->meta->add($item);
-
-        $m->save();
-
-        $m = $m::first();
+        $m = $this->createMetableStub();
 
         $this->assertSame('bar', $m->meta->foo);
     }
 
     public function testObserveSaveAndCascadeExistingItems()
     {
-        $m = $this->getMetableStub();
+        $m = $this->createMetableStub();
 
-        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
-
-        $m->meta->add($item);
-
-        $m->save();
-
-        $m = $m::first();
-
-        $meta = $m->meta->first();
-
-        $meta->value = 'baz';
+        $m->meta->foo = 'baz';
 
         $m->save();
 
@@ -111,15 +93,7 @@ class MetableTest extends AbstractTestCase
 
     public function testObserveSaveAndCascadeRemoveItems()
     {
-        $m = $this->getMetableStub();
-
-        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
-
-        $m->meta->add($item);
-
-        $m->save();
-
-        $m = $m::first();
+        $m = $this->createMetableStub();
 
         unset($m->meta[0]);
 
@@ -132,6 +106,15 @@ class MetableTest extends AbstractTestCase
 
     public function testObserveDeleteAndCascade()
     {
+        $m = $this->createMetableStub();
+
+        $m->delete();
+
+        $this->assertNull(MetaItem::first());
+    }
+
+    protected function createMetableStub()
+    {
         $m = $this->getMetableStub();
 
         $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
@@ -140,9 +123,7 @@ class MetableTest extends AbstractTestCase
 
         $m->save();
 
-        $m->delete();
-
-        $this->assertNull(MetaItem::first());
+        return $m::first();
     }
 
     protected function getMetableStub()
