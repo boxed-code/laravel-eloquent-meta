@@ -1,6 +1,6 @@
-#Laravel Model Meta#
+#Eloquent Meta#
 
-Laravel model meta provides an easy way to implement schemaless meta data stores for `Eloquent` models.
+Eloquent meta provides an easy way to implement schemaless meta data stores for `Eloquent` models.
 
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/boxedcode/laravel-eloquent-meta/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/boxedcode/laravel-eloquent-meta/?branch=master)
