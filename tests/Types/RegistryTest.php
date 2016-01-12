@@ -2,10 +2,10 @@
 
 namespace BoxedCode\Tests\Eloquent\Meta\Types;
 
-use BoxedCode\Eloquent\Meta\Types\IntegerType;
 use BoxedCode\Eloquent\Meta\Types\Registry;
 use BoxedCode\Eloquent\Meta\Types\StringType;
 use BoxedCode\Tests\Eloquent\Meta\Support\AbstractTestCase;
+use BoxedCode\Tests\Eloquent\Meta\Support\Stubs\TypeStub;
 use InvalidArgumentException;
 use stdClass;
 
@@ -15,26 +15,26 @@ class RegistryTest extends AbstractTestCase
     {
         $r = $this->getRegistry();
 
-        $c = new StringType($this->getMetaItemStub());
+        $c = new TypeStub($this->getMetaItemStub());
 
         $r->register($c);
 
-        $this->assertSame($c, $r[StringType::class]);
+        $this->assertSame($c, $r[TypeStub::class]);
     }
 
     public function testRegisterArrayOfTypeContracts()
     {
         $r = $this->getRegistry();
 
-        $st = new StringType($this->getMetaItemStub());
+        $st = new TypeStub($this->getMetaItemStub());
 
-        $it = new IntegerType($this->getMetaItemStub());
+        $it = new StringType($this->getMetaItemStub());
 
         $r->register([$st, $it]);
 
-        $this->assertSame($st, $r[StringType::class]);
+        $this->assertSame($st, $r[TypeStub::class]);
 
-        $this->assertSame($it, $r[IntegerType::class]);
+        $this->assertSame($it, $r[StringType::class]);
     }
 
     /**
@@ -54,7 +54,7 @@ class RegistryTest extends AbstractTestCase
     {
         $r = $this->getRegistry();
 
-        $st = new StringType($this->getMetaItemStub());
+        $st = new TypeStub($this->getMetaItemStub());
 
         $r->register([$st, $st]);
     }
@@ -63,7 +63,7 @@ class RegistryTest extends AbstractTestCase
     {
         $r = $this->getRegistry();
 
-        $st = new StringType($this->getMetaItemStub());
+        $st = new TypeStub($this->getMetaItemStub());
 
         $r->register($st);
 
@@ -85,35 +85,35 @@ class RegistryTest extends AbstractTestCase
     {
         $r = $this->getRegistry();
 
-        $st = new StringType($this->getMetaItemStub());
+        $st = new TypeStub($this->getMetaItemStub());
 
         $r->register($st);
 
-        $this->assertSame([StringType::class => $st], $r->registered());
+        $this->assertSame([TypeStub::class => $st], $r->registered());
     }
 
     public function testOffsetSetExists()
     {
         $r = $this->getRegistry();
 
-        $st = new StringType($this->getMetaItemStub());
+        $st = new TypeStub($this->getMetaItemStub());
 
-        $r->offsetSet(StringType::class, $st);
+        $r->offsetSet(TypeStub::class, $st);
 
-        $this->assertTrue($r->offsetExists(StringType::class));
+        $this->assertTrue($r->offsetExists(TypeStub::class));
     }
 
     public function testOffsetUnset()
     {
         $r = $this->getRegistry();
 
-        $st = new StringType;
+        $st = new TypeStub;
 
         $r->register($st);
 
-        $r->offsetUnset(StringType::class);
+        $r->offsetUnset(TypeStub::class);
 
-        $this->assertFalse(isset($r[StringType::class]));
+        $this->assertFalse(isset($r[TypeStub::class]));
     }
 
     protected function getRegistry()
