@@ -109,8 +109,11 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     public function add($item)
     {
         if ($item instanceof MetaItemContract) {
+
+            $item->tag = $item->tag ?: $this->default_tag;
+
             if (! is_null($this->findItem($item->key, $item->tag))) {
-                $tag = $item->tag ?: $this->default_tag;
+                $tag = $item->tag;
 
                 $key = $item->key;
 
