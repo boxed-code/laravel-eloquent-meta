@@ -50,7 +50,25 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
 
         $this->original_model_keys = $this->modelKeys();
 
+        $this->setTags($this->items);
+
         $this->observeDeletions($this->items);
+    }
+
+    /**
+     * Sets the default tag on any 'tag-less' items.
+     *
+     * @param array $items
+     */
+    protected function setTags(array $items)
+    {
+        array_map(function($item) {
+            if ($item instanceof MetaItemContract) {
+                $item->tag = $item->tag ?: $this->default_tag;
+            }
+
+            return $item;
+        }, $items);
     }
 
     /**
