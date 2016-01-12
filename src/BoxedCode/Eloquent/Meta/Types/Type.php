@@ -33,6 +33,16 @@ abstract class Type
     }
 
     /**
+     * Gets the model instance.
+     *
+     * @return \BoxedCode\Eloquent\Meta\Contracts\MetaItem|null
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    /**
      * Parse & return the meta item value.
      *
      * @return mixed
