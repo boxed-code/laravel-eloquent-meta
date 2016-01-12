@@ -2,7 +2,9 @@
 
 namespace BoxedCode\Tests\Eloquent\Meta\Support;
 
+use BoxedCode\Eloquent\Meta\MetaItem;
 use BoxedCode\Eloquent\Meta\MetaServiceProvider;
+use BoxedCode\Tests\Eloquent\Meta\Support\Stubs\MetableModel;
 use Orchestra\Testbench\TestCase;
 
 class AbstractTestCase extends TestCase
@@ -61,5 +63,28 @@ class AbstractTestCase extends TestCase
             '--database' => 'testbench',
             '--realpath' => app()->databasePath().'/migrations',
         ]);
+    }
+
+    protected function createMetableStub()
+    {
+        $m = $this->getMetableStub();
+
+        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
+
+        $m->meta->add($item);
+
+        $m->save();
+
+        return $m::first();
+    }
+
+    protected function getMetableStub()
+    {
+        return new MetableModel;
+    }
+
+    protected function getMetaItemStub()
+    {
+        return new MetaItem;
     }
 }

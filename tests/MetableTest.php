@@ -5,7 +5,6 @@ namespace BoxedCode\Tests\Eloquent\Meta;
 use BoxedCode\Eloquent\Meta\HasMeta;
 use BoxedCode\Eloquent\Meta\MetaItem;
 use BoxedCode\Tests\Eloquent\Meta\Support\AbstractTestCase;
-use BoxedCode\Tests\Eloquent\Meta\Support\Stubs\MetableModel;
 
 class MetableTest extends AbstractTestCase
 {
@@ -114,21 +113,4 @@ class MetableTest extends AbstractTestCase
         $this->assertNull(MetaItem::first());
     }
 
-    protected function createMetableStub()
-    {
-        $m = $this->getMetableStub();
-
-        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
-
-        $m->meta->add($item);
-
-        $m->save();
-
-        return $m::first();
-    }
-
-    protected function getMetableStub()
-    {
-        return new MetableModel;
-    }
 }
