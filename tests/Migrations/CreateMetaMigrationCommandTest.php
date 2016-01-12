@@ -10,7 +10,7 @@ class CreateMetaMigrationCommandTest extends AbstractTestCase
     {
         $this->assertTrue(\Schema::hasTable('meta'));
 
-        $this->assertEquals([
+        $this->assertSame([
             'id',
             'key',
             'tag',

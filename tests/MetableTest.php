@@ -43,7 +43,7 @@ class MetableTest extends AbstractTestCase
     {
         $m = $this->getMetableStub();
 
-        $this->assertEquals(MetaItem::class, $m->getMetaItemClassName());
+        $this->assertSame(MetaItem::class, $m->getMetaItemClassName());
     }
 
     public function testGetMetaItemClassNameCustom()
@@ -52,7 +52,7 @@ class MetableTest extends AbstractTestCase
 
         $m->setProperty('metaItemClassname', 'FooClass');
 
-        $this->assertEquals('FooClass', $m->getMetaItemClassName());
+        $this->assertSame('FooClass', $m->getMetaItemClassName());
     }
 
     public function testGetMetaItemInstance()

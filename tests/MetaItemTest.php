@@ -23,7 +23,7 @@ class MetaItemTest extends AbstractTestCase
 
         $m->setValueAttribute('bar');
 
-        $this->assertEquals('bar', $m->getValueAttribute());
+        $this->assertSame('bar', $m->getValueAttribute());
     }
 
     public function testSetValueAttributeWithType()
@@ -32,7 +32,7 @@ class MetaItemTest extends AbstractTestCase
 
         $m->setValueAttribute('123', IntegerType::class);
 
-        $this->assertEquals('integer', gettype($m->getValueAttribute()));
+        $this->assertSame('integer', gettype($m->getValueAttribute()));
     }
 
     public function testGetSetRawValue()
@@ -41,7 +41,7 @@ class MetaItemTest extends AbstractTestCase
 
         $m->setValueAttribute('bar');
 
-        $this->assertEquals('bar', $m->getRawValue());
+        $this->assertSame('bar', $m->getRawValue());
     }
 
     public function testNewCollection()
@@ -57,8 +57,8 @@ class MetaItemTest extends AbstractTestCase
 
         $this->assertInstanceOf(MetaItemCollection::class, $c);
 
-        $this->assertEquals($models[0], $c[0]);
-        $this->assertEquals($models[1], $c[1]);
+        $this->assertSame($models[0], $c[0]);
+        $this->assertSame($models[1], $c[1]);
     }
 
     public function testToString()

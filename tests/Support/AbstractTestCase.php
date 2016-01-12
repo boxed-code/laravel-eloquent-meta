@@ -65,11 +65,13 @@ class AbstractTestCase extends TestCase
         ]);
     }
 
-    protected function createMetableStub()
+    protected function createMetableStub($attributes = [])
     {
         $m = $this->getMetableStub();
 
-        $item = new MetaItem(['key' => 'foo', 'value' => 'bar']);
+        $attributes = array_merge(['key' => 'foo', 'value' => 'bar'], $attributes);
+
+        $item = new MetaItem($attributes);
 
         $m->meta->add($item);
 
@@ -83,8 +85,10 @@ class AbstractTestCase extends TestCase
         return new MetableModel;
     }
 
-    protected function getMetaItemStub()
+    protected function getMetaItemStub($attributes = [])
     {
-        return new MetaItem;
+        $attributes = array_merge(['key' => 'foo', 'value' => 'bar'], $attributes);
+
+        return new MetaItem($attributes);
     }
 }
