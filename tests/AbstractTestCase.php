@@ -2,6 +2,7 @@
 
 namespace BoxedCode\Tests\Eloquent\Meta;
 
+use BoxedCode\Eloquent\Meta\MetaServiceProvider;
 use Orchestra\Testbench\TestCase;
 
 class AbstractTestCase extends TestCase
@@ -22,29 +23,43 @@ class AbstractTestCase extends TestCase
             'prefix'   => '',
         ]);
 
+        if (! class_exists('MetaMigration')) {
+            static::makeMigration();
+        } else {
+            static::migrate();
+        }
+
         parent::getEnvironmentSetUp($app);
     }
 
-    public function tearDown()
+    protected function getPackageProviders($app)
     {
-        $files = glob($this->app->databasePath().'/migrations/*');
-
-        foreach ($files as $file) {
-            if (is_file($file)) {
-                unlink($file);
-            }
-        }
-
-        parent::tearDown();
+        return [MetaServiceProvider::class];
     }
 
-    protected function migrate($args = [])
+    protected static function makeMigration($args = [])
     {
-        $this->assertEquals(0, $this->artisan('make:meta-migration', $args));
+        $artisan = app()->make('Illuminate\Contracts\Console\Kernel');
 
-        $this->assertEquals(0, $this->artisan('migrate', [
+        $artisan->call('make:meta-migration', $args);
+
+        static::migrate();
+    }
+
+    protected static function migrate()
+    {
+        $artisan = app()->make('Illuminate\Contracts\Console\Kernel');
+
+        // Models
+        $artisan->call('migrate', [
             '--database' => 'testbench',
-            '--realpath' => $this->app->databasePath().'/migrations',
-        ]));
+            '--realpath' => realpath(__DIR__.'/Migrations'),
+        ]);
+
+        // Meta
+        $artisan->call('migrate', [
+            '--database' => 'testbench',
+            '--realpath' => app()->databasePath().'/migrations',
+        ]);
     }
 }
