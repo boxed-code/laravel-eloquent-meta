@@ -48,11 +48,10 @@ trait FluentMeta
      */
     protected function existsOnParent($name)
     {
-        $columns = $this->getClassColumns(static::class);
-
         return property_exists($this, $name)
             || method_exists($this, $name)
-            || in_array($name, $columns);
+            || ! is_null($this->getAttribute($name))
+            || in_array($name, $this->getClassColumns(static::class));
     }
 
     /**
