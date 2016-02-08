@@ -29,6 +29,7 @@ class DummyClass extends Migration
             $table->string('type');
             $table->longText('value');
             $table->timestamps();
+            $table->unique(['key', 'model_type', 'model_id']);
             $table->unique(['key', 'tag', 'model_type', 'model_id', 'type']);
         });
     }

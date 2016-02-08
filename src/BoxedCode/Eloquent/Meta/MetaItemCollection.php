@@ -112,7 +112,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
 
             $item->tag = $item->tag ?: $this->default_tag;
 
-            if (! is_null($this->findItem($item->key, $item->tag))) {
+            if (! is_null($this->findItem($item->key))) {
                 $tag = $item->tag;
 
                 $key = $item->key;
@@ -253,7 +253,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __isset($name)
     {
-        return ! is_null($this->findItem($name, $this->default_tag));
+        return ! is_null($this->findItem($name));
     }
 
     /**
@@ -263,7 +263,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __unset($name)
     {
-        $key = $this->findItem($name, $this->default_tag);
+        $key = $this->findItem($name);
 
         if (! is_null($key)) {
             $this->forget($key);
@@ -279,7 +279,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __get($name)
     {
-        $key = $this->findItem($name, $this->default_tag);
+        $key = $this->findItem($name);
 
         if (! is_null($key)) {
             return $this->get($key)->value;
@@ -301,7 +301,7 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
      */
     public function __set($name, $value)
     {
-        $key = $this->findItem($name, $this->default_tag);
+        $key = $this->findItem($name);
 
         if (! is_null($key)) {
             $this->get($key)->value = $value;
