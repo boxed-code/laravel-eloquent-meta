@@ -172,9 +172,7 @@ trait Metable
     public static function observeDeleteAndCascade()
     {
         $onDelete = function ($model) {
-            foreach ($model->meta as $meta) {
-                $meta->delete();
-            }
+            $model->meta()->delete();
         };
 
         static::deleted($onDelete);
