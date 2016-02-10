@@ -23,4 +23,5 @@ interface MetaItemCollection
     public function get($key, $default = null);
     public function forget($keys);
     public function keys();
+    public function fill($items = []);
 }

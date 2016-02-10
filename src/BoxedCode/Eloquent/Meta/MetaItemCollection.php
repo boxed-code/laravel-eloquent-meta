@@ -129,6 +129,21 @@ class MetaItemCollection extends CollectionBase implements CollectionContract
     }
 
     /**
+     * Fill the meta collection from a key value array.
+     * 
+     * @param  array  $items
+     * @return $this
+     */
+    public function fill($items = [])
+    {
+        foreach ($items as $key => $value) {
+            $this->$key = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Get the collection key form an item key and tag.
      *
      * @param mixed $key

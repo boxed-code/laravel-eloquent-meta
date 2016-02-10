@@ -56,6 +56,21 @@ class MetaItemCollectionTest extends AbstractTestCase
         $this->assertSame($item, $c[0]);
     }
 
+    public function testFill()
+    {
+        $c = $this->getMetaItemCollectionStub();
+
+        $kv = [
+            'foo' => 'bar',
+            'baz' => 'qux',
+        ];
+
+        $c->fill($kv);
+
+        $this->assertEquals($kv['foo'], $c->foo);
+        $this->assertEquals($kv['baz'], $c->baz);
+    }
+
     public function testAddMetaItem()
     {
         $c = $this->getMetaItemCollectionStub();
