@@ -12,7 +12,7 @@ Eloquent meta provides an easy way to implement schemaless meta data stores for 
 Add the package via composer:
 
 ```php
-composer require boxedcode/laravel-eloquent-meta
+composer require boxed-code/laravel-eloquent-meta
 ```
 
 then add the following
